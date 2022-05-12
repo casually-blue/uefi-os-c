@@ -9,6 +9,7 @@ QEMU_ARGS=-smp 4 \
 
 OBJS=\
 		 obj/main.o \
+		 obj/idt.o \
 
 boot/kernel.efi: $(OBJS)
 	@echo "Link $@"
