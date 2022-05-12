@@ -41,18 +41,40 @@ void interrupt_handler(struct interrupt_frame *frame) {
 
 }
 
+__attribute__ ((interrupt)) 
+void interrupt_error_handler(struct interrupt_frame *frame, uint64_t error_code) {
+
+}
+
 void setup_idt(void) { 
   struct InterruptDescriptor interrupt_descriptor = {
     .interrupt_function_pointer_0_15 = ((uint32_t)(uint64_t)interrupt_handler) & 0x0000FFFF,
-    .selector = 0,
+    .selector = 1,
     .reserved = 0,
     .type_attributes = 0xEE,
     .interrupt_function_pointer_16_31 = (((uint32_t)(uint64_t)interrupt_handler) & 0xFFFF0000) >> 16,
     .interrupt_function_pointer_32_63 = ((uint64_t)interrupt_handler) >> 32,
   };
 
+  struct InterruptDescriptor interrupt_descriptor_e = {
+    .interrupt_function_pointer_0_15 = ((uint32_t)(uint64_t)interrupt_error_handler) & 0x0000FFFF,
+    .selector = 1,
+    .reserved = 0,
+    .type_attributes = 0xEE,
+    .interrupt_function_pointer_16_31 = (((uint32_t)(uint64_t)interrupt_error_handler) & 0xFFFF0000) >> 16,
+    .interrupt_function_pointer_32_63 = ((uint64_t)interrupt_error_handler) >> 32,
+  };
+
+
+
   for(int i=0; i < 256; i++) {
-    idt.entries[i] = interrupt_descriptor;
+    if((i <= 7 && i >= 0) || (i == 9) || (i == 15) || (i == 16) || (i <=29 && i >= 18) || (i == 31)) {
+      idt.entries[i] = interrupt_descriptor;
+    }
+
+    if((i == 8) || (i >= 10 &&  i <= 14) || (i == 17) || (i == 30)) {
+      idt.entries[i] = interrupt_descriptor_e;
+    }
   }
 
   __asm__("lidt %0" :: "m"(idtr));
