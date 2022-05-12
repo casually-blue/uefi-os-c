@@ -20,7 +20,7 @@ obj:
 
 obj/%.o: src/%.c obj
 	@echo "Compiling $@ ($<)"
-	@clang -g -Iefi -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -c $< -o $@
+	@clang -g -Iinclude/efi -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -c $< -o $@
 
 clean:
 	rm -rf obj
