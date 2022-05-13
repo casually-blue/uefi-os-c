@@ -23,10 +23,10 @@ struct CPUID_BASIC {
       unsigned int reserved1: 4;
       unsigned int ext_family_id: 8;
       uint32_t reserved[3];
-    } __attribute__((__packed__));
+    };
     uint32_t cpuid[4];
-  } __attribute__((__packed__)) x2;
-} __attribute__((__packed__));
+  } x2;
+};
 
 struct CPUID_BASIC get_cpuid_basic();
 uint32_t get_cpuid_max_extension();
