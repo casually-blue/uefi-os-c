@@ -10,18 +10,19 @@
 
 efi_entry(efi_main);
 
+void reset_efi_console(EFISystemTable st) {
+  call_efi_proto(st->ConOut, Reset, true);
+  call_efi_proto(st->ConOut, SetAttribute, 0x50);
+  call_efi_proto(st->ConOut, ClearScreen);
+
+}
+
 EFIStatus efi_main(EFIHandle image_handle, EFISystemTable system_table) {
-  EFITextOutputProtocol console_output = system_table->ConOut;
+  reset_efi_console(system_table);
 
-  call_efi_proto(console_output, Reset, true);
-  call_efi_proto(console_output, SetAttribute, 0x50);
-  call_efi_proto(console_output, ClearScreen);
+  call_efi_proto(system_table->ConOut, OutputString, L"CPUID:\r\n\t");
 
-  call_efi_proto(console_output, OutputString, L"CPUID:\r\n\t");
-
-  struct CPUID_BASIC info = get_cpuid_basic();
-
-  print_string(info.genuine, 12, console_output);
+  print_string(get_cpuid_basic().genuine, CPUID_GENUINE_LEN, system_table->ConOut);
 
   while(1) {
 
