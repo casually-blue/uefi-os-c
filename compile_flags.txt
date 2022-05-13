@@ -1,0 +1,3 @@
+-fshort-wchar
+-Iinclude/efi
+-Iinclude
