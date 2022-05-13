@@ -16,16 +16,14 @@ boot/kernel.efi: $(OBJS)
 	@echo "Link $@"
 	@clang -g -target x86_64-unknown-windows -nostdlib -Wl,-entry:efi_entry_main -Wl,-subsystem:efi_application -fuse-ld=lld-link $(OBJS) -o boot/kernel.efi
 
-obj:
-	@mkdir -p obj
-
-obj/%.o: src/%.c obj
+obj/%.o: src/%.c
 	@echo "Compiling $@ ($<)"
 	@clang $(CFLAGS) -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -c $< -o $@
 
 clean:
 	rm -rf obj
 	rm -f boot/kernel.efi
+	mkdir obj
 
 run: boot/kernel.efi
 	cd boot && qemu-system-x86_64 $(QEMU_ARGS) 2>../qemu/qemu.log
