@@ -2,7 +2,7 @@ all: boot/kernel.efi
 
 QEMU_ARGS=-smp 4 \
 					-m 4G \
-          -enable-kvm \
+  				$(QEMU_FLAGS)\
           -drive id=disk0,file=fat:rw:.,format=raw \
           -drive "if=pflash,format=raw,readonly=on,file=../qemu/OVMF_CODE.fd" \
   				-drive "if=pflash,format=raw,file=../qemu/OVMF_VARS.fd"

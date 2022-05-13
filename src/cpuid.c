@@ -15,16 +15,22 @@ void cpuid_raw(uint32_t eax_in, uint32_t ecx_in, uint32_t *eax, uint32_t *ebx, u
 
 struct CPUID_BASIC get_cpuid_basic() {
   struct CPUID_BASIC basic;
-  char* gen = basic.genuine;
   cpuid_raw(
       0,
       0, 
-      (void*)&basic.max_cpuid_input_val, 
-      (void*)basic.genuine, 
-      (void*)basic.genuine+8, 
-      (void*)basic.genuine+4
+      &basic.x1.cpuid[0],
+      &basic.x1.cpuid[1],
+      &basic.x1.cpuid[3],
+      &basic.x1.cpuid[2]
       );
-
+  cpuid_raw(
+      1,
+      0,
+      &basic.x2.cpuid[0],
+      &basic.x2.cpuid[1],
+      &basic.x2.cpuid[2],
+      &basic.x2.cpuid[3]
+      );
   return basic;
 }
 
@@ -33,5 +39,3 @@ uint32_t get_cpuid_max_extension() {
   cpuid_raw(0x80000001, 0, &r, &rest, &rest, &rest);
   return r;
 }
-
-

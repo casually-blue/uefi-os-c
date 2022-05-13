@@ -22,7 +22,16 @@ EFIStatus efi_main(EFIHandle image_handle, EFISystemTable system_table) {
 
   call_efi_proto(system_table->ConOut, OutputString, L"CPUID:\r\n\t");
 
-  print_string(get_cpuid_basic().genuine, CPUID_GENUINE_LEN, system_table->ConOut);
+  struct CPUID_BASIC basic = get_cpuid_basic();
+
+  print_string(basic.x1.genuine, CPUID_GENUINE_LEN, system_table->ConOut);
+
+  print_string("\r\n\tmodel: ", 10, system_table->ConOut);
+  print_uint(basic.x2.model, 16, system_table->ConOut);
+  print_string("\r\n\tfamily: ", 14, system_table->ConOut);
+  print_uint(basic.x2.family_id, 16, system_table->ConOut);
+  print_string("\r\n\tfamily_ext: ", 18, system_table->ConOut);
+  print_uint(basic.x2.ext_family_id, 16, system_table->ConOut);
 
   while(1) {
 

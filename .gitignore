@@ -16,5 +16,4 @@
 !qemu/OVMF_CODE.fd
 !qemu/OVMF_VARS.fd
 
-!.envrc
 !compile_flags.txt
