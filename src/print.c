@@ -20,9 +20,13 @@ void print_string(char* str, unsigned int length, EFI_SIMPLE_TEXT_OUTPUT_PROTOCO
 void print_uint(int num, int base, EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* proto) {
   int i = 0;
 
+  if(base == 16) {
+    wchar_buffer[i++] = '0';
+    wchar_buffer[i++] = 'x';
+  }
 
   if(num == 0) {
-    wchar_buffer[0] = '0';
+    wchar_buffer[i] = '0';
     i++;
   }
 
@@ -34,14 +38,13 @@ void print_uint(int num, int base, EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* proto) {
     i++;
   }
 
-  wchar_buffer[i] = 0;
-/*
-  for(int j = 0; j < i; j++, i--) {
-    char temp = buffer[i];
-    buffer[i] = buffer[j];
-    buffer[j] = temp;
+  wchar_buffer[i--] = 0;
+
+  for(int j = (base == 16 ? 2 : 0); j < i; j++, i--) {
+    unsigned short temp = wchar_buffer[i];
+    wchar_buffer[i] = wchar_buffer[j];
+    wchar_buffer[j] = temp;
   }
-  */
 
   call_efi_proto(proto, OutputString, wchar_buffer);
 }

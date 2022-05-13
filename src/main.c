@@ -26,11 +26,17 @@ EFIStatus efi_main(EFIHandle image_handle, EFISystemTable system_table) {
 
   print_string(basic.x1.genuine, CPUID_GENUINE_LEN, system_table->ConOut);
 
-  print_string("\r\n\tmodel: ", 10, system_table->ConOut);
+  print_string("\r\n\tmodel: ", 9, system_table->ConOut);
   print_uint(basic.x2.model, 16, system_table->ConOut);
-  print_string("\r\n\tfamily: ", 14, system_table->ConOut);
+
+  print_string("\r\n\tmax_cpuid: ", 13, system_table->ConOut);
+  print_uint(basic.x1.max_cpuid_input_val, 16, system_table->ConOut);
+
+
+  print_string("\r\n\tfamily: ", 13, system_table->ConOut);
   print_uint(basic.x2.family_id, 16, system_table->ConOut);
-  print_string("\r\n\tfamily_ext: ", 18, system_table->ConOut);
+
+  print_string("\r\n\tfamily_ext: ", 17, system_table->ConOut);
   print_uint(basic.x2.ext_family_id, 16, system_table->ConOut);
 
   while(1) {
