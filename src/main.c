@@ -20,14 +20,8 @@ void reset_efi_console(EFISystemTable st) {
 EFIStatus efi_main(EFIHandle image_handle, EFISystemTable system_table) {
   reset_efi_console(system_table);
 
-  call_efi_proto(system_table->ConOut, OutputString, L"CPUID:");
-
   cpuid_basic_info basic = get_cpuid_basic_info();
   cpuid_feature_info features = get_cpuid_feature_info();
-
-  if(features.feature_information.has_x87_fpu!= 1) {
-    call_efi_proto(system_table->ConOut, OutputString, L"no x86fpu");
-  }
 
   while(1) {
 
