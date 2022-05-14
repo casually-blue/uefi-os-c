@@ -18,7 +18,7 @@ boot/kernel.efi: $(OBJS)
 
 obj/%.o: src/%.c
 	@echo "Compiling $@ ($<)"
-	@clang $(CFLAGS) -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -c $< -o $@
+	@clang -x c $(CFLAGS) -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -c $< -o $@
 
 clean:
 	rm -rf obj

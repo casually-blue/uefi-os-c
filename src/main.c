@@ -22,9 +22,10 @@ EFIStatus efi_main(EFIHandle image_handle, EFISystemTable system_table) {
 
   call_efi_proto(system_table->ConOut, OutputString, L"CPUID:");
 
-  struct CPUID_BASIC basic = get_cpuid_basic();
+  cpuid_basic_info basic = get_cpuid_basic_info();
+  cpuid_feature_info features = get_cpuid_feature_info();
 
-  if(basic.x2.feature_information.has_x87_fpu!= 1) {
+  if(features.feature_information.has_x87_fpu!= 1) {
     call_efi_proto(system_table->ConOut, OutputString, L"no x86fpu");
   }
 
