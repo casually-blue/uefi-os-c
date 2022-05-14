@@ -5,9 +5,9 @@ typedef unsigned int uint;
 
 #define CPUID_GENUINE_LEN 12
 
-struct CPUID_BASIC {
+struct __attribute__((__packed__)) CPUID_BASIC {
   union {
-    struct {
+    struct __attribute__((__packed__)) {
       uint32_t max_cpuid_input_val;
       char genuine[CPUID_GENUINE_LEN];
     };
@@ -15,7 +15,7 @@ struct CPUID_BASIC {
   } x1;
 
   union {
-    struct {
+    struct __attribute__((__packed__)) {
       unsigned int stepping_id: 4;
       unsigned int model: 4;
       unsigned int family_id: 4;
@@ -30,7 +30,7 @@ struct CPUID_BASIC {
       uint max_addressable_logical_processor_ids: 8;
       uint initial_apic_id: 8;
 
-      struct {
+      struct __attribute__((__packed__)) {
         bit(supports_streaming_simd3);
         bit(supports_pclmulqdq);
         bit(supports_ds64);
@@ -100,7 +100,7 @@ struct CPUID_BASIC {
     };
     uint32_t cpuid[4];
   } x2;
-} __attribute__((__packed__));
+};
 
 struct CPUID_BASIC get_cpuid_basic();
 uint32_t get_cpuid_max_extension();
