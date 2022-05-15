@@ -10,7 +10,10 @@ QEMU_ARGS=-smp 4 \
 SRC=$(shell find src -name "*.c" -type f)
 OBJS=$(patsubst src/%.c,obj/%.o, $(SRC))
 
-CFLAGS=-O2 -g -Iinclude -Wall -Werror -Wpedantic -Wno-gnu-zero-variadic-macro-arguments -fno-vectorize
+CFLAGS_WARN=-Wall -Werror -Wpedantic -Wno-gnu-zero-variadic-macro-arguments 
+CFLAGS_INCLUDE=-Iinclude
+CFLAGS_FLAGS=-fno-vectorize -ffreestanding -fshort-wchar -mno-red-zone
+CFLAGS=-O2 -g $(CFLAGS_WARN) $(CFLAGS_INCLUDE) $(CFLAGS_FLAGS)
 
 boot/kernel.efi: $(OBJS)
 	@echo "Link $@"
@@ -19,7 +22,7 @@ boot/kernel.efi: $(OBJS)
 obj/%.o: src/%.c
 	@mkdir -p $(shell dirname $@)
 	@echo "Compiling $@ ($<)"
-	@clang -x c $(CFLAGS) -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -c $< -o $@
+	@clang -x c $(CFLAGS) -target x86_64-unknown-windows -c $< -o $@
 
 clean:
 	rm -rf obj
@@ -31,4 +34,3 @@ run: boot/kernel.efi
 
 debug: boot/kernel.efi
 	cd boot && qemu-system-x86_64 $(QEMU_ARGS) -S -s
-         

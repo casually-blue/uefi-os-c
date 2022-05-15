@@ -2,6 +2,7 @@
 #include<stdint.h>
 
 #include<efi/efi-macros.h>
+#include<efi/libc/stdio.h>
 
 #include<cpuid.h>
 #include<print.h>
