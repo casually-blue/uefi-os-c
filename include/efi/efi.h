@@ -116,7 +116,7 @@ typedef struct EFI_TABLE_HEADER {
 } EFI_TABLE_HEADER;
 
 
-#include <efi-st.h>
+#include <efi/efi-st.h>
 
 
 #endif /* __EFI_H */

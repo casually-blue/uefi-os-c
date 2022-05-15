@@ -1,27 +1,34 @@
 #include<stdbool.h> 
 #include<stdint.h>
 
-#include<efi.h>
-#include<efi_macros.h>
+#include<efi/efi-macros.h>
 
-#include<os_main.h> 
 #include<cpuid.h>
 #include<print.h>
 
-efi_entry(efi_main);
+struct system_table_data system_table;
 
-void reset_efi_console(EFISystemTable st) {
-  call_efi_proto(st->ConOut, Reset, true);
-  call_efi_proto(st->ConOut, SetAttribute, 0x50);
-  call_efi_proto(st->ConOut, ClearScreen);
+void reset_efi_console() {
+  if(!system_table.in_boot_services){
+    return;
+  }
+
+  call_efi_proto(system_table._->ConOut, Reset, true);
+  call_efi_proto(system_table._->ConOut, SetAttribute, 0x50);
+  call_efi_proto(system_table._->ConOut, ClearScreen);
 
 }
 
-EFIStatus efi_main(EFIHandle image_handle, EFISystemTable system_table) {
-  reset_efi_console(system_table);
+efi_entry(efi_main)() {
+
+  reset_efi_console();
+
+  printf("Hello World!\r\n");
 
   cpuid_basic_info basic = get_cpuid_basic_info();
-  cpuid_feature_info features = get_cpuid_feature_info();
+  //cpuid_feature_info features = get_cpuid_feature_info();
+
+  printf("CPU name: %.12s\r\n", basic.genuine);
 
   while(1) {
 

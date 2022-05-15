@@ -7,8 +7,8 @@
 #ifndef __EFI_BS_H
 #define __EFI_BS_H
 
-#include <efi.h>
-#include <protocol/efi-dpp.h>
+#include <efi/efi.h>
+#include <efi/protocol/efi-dpp.h>
 
 
 /* Event Types */

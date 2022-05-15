@@ -7,7 +7,7 @@
 #ifndef __EFI_TIME_H
 #define __EFI_TIME_H
 
-#include <efi.h>
+#include <efi/efi.h>
 
 
 #define EFI_TIME_ADJUST_DAYLIGHT    0x01

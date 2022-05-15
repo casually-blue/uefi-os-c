@@ -1,6 +1,5 @@
 #pragma once
 #include<stdint.h>
-#define static_assert _Static_assert
 typedef unsigned int uint;
 #define bit(name) uint name: 1
 #define reserved(n) uint : n
@@ -20,7 +19,7 @@ typedef struct __attribute__((__packed__)){
     struct __attribute__((__packed__)) data; \
     cpuid_regs regs;\
   } name; \
-  static_assert(sizeof(name) == 16, "CPUID struct must be 128 bits wide")
+  _Static_assert(sizeof(name) == 16, "CPUID struct must be 128 bits wide")
 
 cpuid_union(cpuid_basic_info, {
     uint32_t max_cpuid_input_val;
@@ -43,9 +42,14 @@ cpuid_union(cpuid_feature_info, {
     bits(8, max_addressable_logical_processor_ids);
     bits(8, initial_apic_id);
 
+    union __attribute__((__packed__)) {
+    struct __attribute__((__packed__)) {
+    reserved(1);
+    bit(supports_pclmulqdq);
+    } instruction_support;
     struct __attribute__((__packed__)) {
     bit(supports_streaming_simd3);
-    bit(supports_pclmulqdq);
+    reserved(1);
     bit(supports_ds64);
     bit(supports_monitor);
     bit(supports_ds_cpl);
@@ -71,6 +75,7 @@ cpuid_union(cpuid_feature_info, {
     bit(supports_popcnt);
     bit(supporgs_apic_oneshot_tsc_deadline);
     bit(supports_aesni);
+    bit(supports_xsave);
     bit(supports_osxsave);
     bit(supports_avx_extensions);
     bit(supports_16bit_floating_converison_instructions);
@@ -88,7 +93,7 @@ cpuid_union(cpuid_feature_info, {
     bit(supports_machine_check_exception);
     bit(supports_cmpxchg8b);
     bit(has_on_chip_apic);
-    bit();
+    reserved(1);
     bit(supports_sysenter_sysexit);
     bit(has_memory_type_range_registers);
     bit(supports_page_global_bit);
@@ -98,7 +103,7 @@ cpuid_union(cpuid_feature_info, {
     bit(supports_page_size_extension_36bit);
     bit(supports_processor_serial_number);
     bit(supports_cflush);
-    bit();
+    reserved(1);
     bit(supports_debug_store);
     bit(supports_acpi);
     bit(supports_intel_mmx);
@@ -108,9 +113,10 @@ cpuid_union(cpuid_feature_info, {
     bit(supports_self_snoop);
     bit(max_apic_ids_field_valid);
     bit(supports_thermal_monitor);
-    bit();
+    reserved(1);
     bit(supports_pending_break_enable);
     } feature_information;
+    };
 }) ;
 
 cpuid_basic_info get_cpuid_basic_info();

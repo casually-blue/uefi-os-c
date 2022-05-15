@@ -7,8 +7,8 @@
 #ifndef __EFI_RS_H
 #define __EFI_RS_H
 
-#include <efi.h>
-#include <efi-time.h>
+#include <efi/efi.h>
+#include <efi/efi-time.h>
 
 
 #define EFI_OPTIONAL_POINTER                0x00000001

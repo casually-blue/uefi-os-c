@@ -1,3 +1,6 @@
 -fshort-wchar
--Iinclude/efi
 -Iinclude
+-Wall
+-Werror
+-Wpedantic
+-Wno-gnu-zero-variadic-macro-arguments

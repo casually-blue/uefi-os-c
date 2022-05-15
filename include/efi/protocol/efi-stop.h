@@ -7,7 +7,7 @@
 #ifndef __EFI_STOP_H
 #define __EFI_STOP_H
 
-#include <efi.h>
+#include <efi/efi.h>
 
 
 #define EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL_GUID    {0x387477c2, 0x69c7, 0x11d2, {0x82, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
